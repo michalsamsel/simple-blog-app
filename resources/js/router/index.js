@@ -1,12 +1,13 @@
-import {createWebHistory, createRouter} from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 
 export const routes = [
-    
+
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes: routes,
+    linkExactActiveClass: 'active',
 });
 
 export default router;
