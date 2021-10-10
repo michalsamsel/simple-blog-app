@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
     <router-link class="navbar-brand" to="/">Blog App</router-link>
     <button
       class="navbar-toggler"
@@ -32,7 +32,9 @@
         <!--End options for guests-->
         <!--Options for users-->
         <li class="nav-item" v-if="isAuthenticated">
-          <router-link class="nav-link" to="/logout">Logout</router-link>
+          <router-link class="nav-link" to="/logout" @click="logout"
+            >Logout</router-link
+          >
         </li>
         <!--End options for users-->
       </ul>
@@ -48,7 +50,22 @@ export default {
     return {
       isAuthenticated: false,
     };
-  },  
+  },
+  methods: {
+    logout() {
+      this.$axios.get("/sanctum/csrf-cookie").then((response) => {
+        this.$axios
+          .post("/api/logout")
+          .then((response) => {
+            this.isAuthenticated=false;
+            window.location.href = "/"
+          })
+          .catch((error) => {
+            console.error(error.response.data.message);
+          });
+      });
+    },
+  },
   created() {
     this.isAuthenticated = window.Laravel.isAuthenticated;
   },
