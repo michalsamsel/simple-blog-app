@@ -8,7 +8,9 @@ import Logout from '../components/users/Logout';
 
 import Posts from '../components/posts/Resources';
 import Post from '../components/posts/Resource';
-import CreatePost from '../components/posts/Create';
+import PostCreate from '../components/posts/Create';
+import PostEdit from '../components/posts/Edit';
+import PostDelete from '../components/posts/Delete';
 
 export const routes = [
     {
@@ -42,10 +44,20 @@ export const routes = [
         component: Post
     },
     {
-        name: 'createPost',
+        name: 'postCreate',
         path: '/post/create',
-        component: CreatePost
-    }
+        component: PostCreate
+    },
+    {
+        name: 'postEdit',
+        path: '/post/:id/edit',
+        component: PostEdit
+    },
+    {
+        name: 'postDelete',
+        path: '/post/:id/delete',
+        component: PostDelete
+    },
 ];
 
 const router = createRouter({

@@ -29,7 +29,7 @@ class PostController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        //Validate new post resource
+        //Validate new resource
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|min:1|max:50',
             'content' => 'required|string|min:1|max:500',
@@ -82,7 +82,8 @@ class PostController extends Controller
             //Return found resource
             return response()->json([
                 'message' => 'Resource found',
-                'post' => $post
+                'post' => $post,
+                'user' => $post->user
             ], 200);
         } catch (Throwable $throwable) {
             //Server side error
@@ -95,23 +96,92 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  String  $request['title']
+     * @param  String  $request['content']
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        //
+        //Validate edited resource
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|min:1|max:50',
+            'content' => 'required|string|min:1|max:500',
+        ]);
+
+        //When validation fails send response
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+            ], 400);
+        }
+
+        //Get user from session
+        $user = Auth::user();
+
+        //Try to update resource
+        try {
+            //Get resource from database
+            $post = Post::where('id', $id)->firstOrFail();
+            //If user is owner of this resource
+            if ($user->id == $post->user_id) {
+                $post->update([
+                    'title' => $request['title'],
+                    'content' => $request['content']
+                ]);
+
+                return response()->json([
+                    'message' => 'Post was updated.'
+                ], 200);
+            } 
+            //If user is not owner of this resource
+            else {
+                return response()->json([
+                    'message' => 'This resource doesnt belong to this user.'
+                ], 401);
+            }
+        } catch (Throwable $throwable) {
+            //Server side error
+            return response()->json([
+                'message' => $throwable
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id):JsonResponse
     {
-        //
+        //Get user from session
+        $user = Auth::user();
+
+        //Try to delete resource
+        try {
+            //Get resource from database
+            $post = Post::where('id', $id)->firstOrFail();
+            //If user is owner of this resource
+            if ($user->id == $post->user_id) {
+                $post->delete();
+
+                return response()->json([
+                    'message' => 'Post was deleted.'
+                ], 200);
+            } 
+            //If user is not owner of this resource
+            else {
+                return response()->json([
+                    'message' => 'This resource doesnt belong to this user.'
+                ], 401);
+            }
+        } catch (Throwable $throwable) {
+            //Server side error
+            return response()->json([
+                'message' => $throwable
+            ], 500);
+        }
     }
 }

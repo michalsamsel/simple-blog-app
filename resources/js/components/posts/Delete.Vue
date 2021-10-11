@@ -8,26 +8,16 @@
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
+        <div class="alert alert-success" role="alert" v-if="message">
+          {{ message }}
+        </div>
         <h3 class="text-center">{{ post.title }}</h3>
         <h5 class="text-center text-break">{{ post.content }}</h5>
-        <small>Written by:<b>{{ author.name }}</b>, Last updated at:{{post.updated_at}}</small>
 
         <br />
-        <button
-          type="button"
-          class="btn btn-primary mr-3"
-          v-if="author.id === user.id"
-          @click="editPost"
-        >
-          Edit
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          v-if="author.id === user.id"
-          @click="deletePost"
-        >
-          Delete
+        <button type="button" class="btn btn-success mr-3" @click="submit">Delete</button>
+        <button type="button" class="btn btn-danger" @click="$router.go(-1)">
+          Cancel
         </button>
       </div>
     </div>
@@ -36,28 +26,34 @@
 
 <script>
 export default {
-  name: "post",
+  name: "postDelete",
   data() {
     return {
+      message: "",
       error: "",
       post: null,
-      author: null,
-      user: window.Laravel.user,
     };
   },
   methods: {
-    editPost() {
-      this.$router.push({
-        name: "postEdit",
-        params: { id: this.$route.params.id },
+    submit(event)
+    {
+      this.$axios.get("/sanctum/csrf-cookie").then((response) => {
+        this.$axios
+          .delete(`/api/post/${this.$route.params.id}`)
+          .then((response) => {
+            this.error = "";
+            this.message = response.data.message;
+            this.$router.push({
+              name: "posts",
+              params: { id: this.$route.params.id },
+            });
+          })
+          .catch((error) => {
+            this.message = "";
+            this.error = error.response.data.message;
+          });
       });
-    },
-    deletePost() {
-      this.$router.push({
-        name: "postDelete",
-        params: { id: this.$route.params.id },
-      });
-    },
+    }
   },
   created() {
     this.$axios
@@ -65,7 +61,6 @@ export default {
       .then((response) => {
         this.error = "";
         this.post = response.data.post;
-        this.author = response.data.user;
       })
       .catch((error) => {
         this.error = error.response.data.message;

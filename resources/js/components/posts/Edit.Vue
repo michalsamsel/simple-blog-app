@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-8 col-md-6">
+      <div class="col-8 col-md-6" v-if="post === null">
+        <h1 class="text-center">Loading article...</h1>
+      </div>
+      <div class="col-8 col-md-6" v-else>
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
@@ -44,16 +47,20 @@
               >{{ 500 - content.length }}/500</small
             >
           </div>
-          <button type="submit" class="btn btn-primary">Post it</button>
+          <button type="button" class="btn btn-success mr-3">
+            Save Changes
+          </button>
+          <button type="button" class="btn btn-danger" @click="$router.go(-1)">
+            Cancel
+          </button>
         </form>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: "postCreate",
+  name: "postEdit",
   data() {
     return {
       message: "",
@@ -68,7 +75,7 @@ export default {
 
       this.$axios.get("/sanctum/csrf-cookie").then((response) => {
         this.$axios
-          .post("/api/post/create", {
+          .put(`/api/post/${this.$route.params.id}`, {
             title,
             content,
           })
@@ -77,7 +84,7 @@ export default {
             this.message = response.data.message;
             this.$router.push({
               name: "post",
-              params: { id: response.data.postId },
+              params: { id: this.$route.params.id },
             });
           })
           .catch((error) => {
@@ -86,6 +93,19 @@ export default {
           });
       });
     },
+  },
+  created() {
+    this.$axios
+      .get(`/api/post/${this.$route.params.id}`)
+      .then((response) => {
+        this.error = "";
+        const post = response.data.post;
+        this.title = post.title;
+        this.content = post.content;
+      })
+      .catch((error) => {
+        this.error = error.response.data.message;
+      });
   },
 };
 </script>
