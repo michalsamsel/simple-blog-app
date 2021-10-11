@@ -47,7 +47,7 @@
               >{{ 500 - content.length }}/500</small
             >
           </div>
-          <button type="button" class="btn btn-success mr-3">
+          <button type="button" class="btn btn-success mr-3" @click="submit">
             Save Changes
           </button>
           <button type="button" class="btn btn-danger" @click="$router.go(-1)">
