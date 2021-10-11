@@ -22,15 +22,18 @@
         <!--End options for everyone-->
         <!--Options for guests-->
         <li class="nav-item" v-if="!isAuthenticated">
-          <router-link class="nav-link" to="/register"
-            >Create account</router-link
-          >
+          <router-link class="nav-link" to="/register">Register</router-link>
         </li>
         <li class="nav-item" v-if="!isAuthenticated">
           <router-link class="nav-link" to="/login">Login</router-link>
         </li>
         <!--End options for guests-->
         <!--Options for users-->
+        <li class="nav-item" v-if="isAuthenticated">
+          <router-link class="nav-link" to="/post/create"
+            >Write article</router-link
+          >
+        </li>
         <li class="nav-item" v-if="isAuthenticated">
           <router-link class="nav-link" to="/logout" @click="logout"
             >Logout</router-link
@@ -57,8 +60,8 @@ export default {
         this.$axios
           .post("/api/logout")
           .then((response) => {
-            this.isAuthenticated=false;
-            window.location.href = "/"
+            this.isAuthenticated = false;
+            window.location.href = "/";
           })
           .catch((error) => {
             console.error(error.response.data.message);
