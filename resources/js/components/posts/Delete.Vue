@@ -15,7 +15,9 @@
         <h5 class="text-center text-break">{{ post.content }}</h5>
 
         <br />
-        <button type="button" class="btn btn-success mr-3" @click="submit">Delete</button>
+        <button type="button" class="btn btn-success mr-3" @click="submit">
+          Delete
+        </button>
         <button type="button" class="btn btn-danger" @click="$router.go(-1)">
           Cancel
         </button>
@@ -35,8 +37,7 @@ export default {
     };
   },
   methods: {
-    submit(event)
-    {
+    submit() {
       this.$axios.get("/sanctum/csrf-cookie").then((response) => {
         this.$axios
           .delete(`/api/post/${this.$route.params.id}`)
@@ -53,7 +54,7 @@ export default {
             this.error = error.response.data.message;
           });
       });
-    }
+    },
   },
   created() {
     this.$axios

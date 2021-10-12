@@ -10,7 +10,10 @@
         </div>
         <h3 class="text-center">{{ post.title }}</h3>
         <h5 class="text-center text-break">{{ post.content }}</h5>
-        <small>Written by:<b>{{ author.name }}</b>, Last updated at:{{post.updated_at}}</small>
+        <small
+          >Written by:<b>{{ author.name }}</b
+          >, Last updated at:{{ post.updated_at }}</small
+        >
 
         <br />
         <button
@@ -42,7 +45,7 @@ export default {
       error: "",
       post: null,
       author: null,
-      user: window.Laravel.user,
+      user: null,
     };
   },
   methods: {
@@ -70,6 +73,7 @@ export default {
       .catch((error) => {
         this.error = error.response.data.message;
       });
+      this.user = window.Laravel.isAuthenticated ? window.Laravel.user : 0
   },
 };
 </script>

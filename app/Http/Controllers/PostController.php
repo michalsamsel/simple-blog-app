@@ -13,11 +13,23 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        try {
+            $posts = Post::paginate(10);
+
+            return response()->json([
+                'message' => 'Success',
+                'posts' => $posts
+            ], 200);
+        } catch (Throwable $throwable) {
+            //Server side error
+            return response()->json([
+                'message' => $throwable
+            ], 500);
+        }
     }
 
     /**
@@ -133,7 +145,7 @@ class PostController extends Controller
                 return response()->json([
                     'message' => 'Post was updated.'
                 ], 200);
-            } 
+            }
             //If user is not owner of this resource
             else {
                 return response()->json([
@@ -154,7 +166,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(int $id):JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         //Get user from session
         $user = Auth::user();
@@ -170,7 +182,7 @@ class PostController extends Controller
                 return response()->json([
                     'message' => 'Post was deleted.'
                 ], 200);
-            } 
+            }
             //If user is not owner of this resource
             else {
                 return response()->json([
