@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use DB;
 use Validator;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -18,8 +19,10 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $posts = Post::paginate(10);
+            //Paginated data is ordered by newest date            
+            $posts = DB::table('posts')->orderBy('created_at', 'desc')->paginate(10);
 
+            //Return data
             return response()->json([
                 'message' => 'Success',
                 'posts' => $posts

@@ -26,11 +26,18 @@
         </button>
         <button
           type="button"
-          class="btn btn-danger"
+          class="btn btn-danger mr-3"
           v-if="author.id === user.id"
           @click="deletePost"
         >
           Delete
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary float-right"          
+          @click="$router.go(-1)"
+        >
+          Go back
         </button>
       </div>
     </div>
@@ -73,7 +80,7 @@ export default {
       .catch((error) => {
         this.error = error.response.data.message;
       });
-      this.user = window.Laravel.isAuthenticated ? window.Laravel.user : 0
+    this.user = window.Laravel.isAuthenticated ? window.Laravel.user : 0;
   },
 };
 </script>

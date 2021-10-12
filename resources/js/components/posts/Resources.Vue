@@ -16,7 +16,7 @@
           {{ error }}
         </div>
         <div class="mb-3" v-for="post in posts" :key="post.id">
-          <router-link :to="{ name: 'post', params: { id: post.id } }"><h2>{{post.title}}</h2></router-link>
+          <router-link :to="{ name: 'post', params: { id: post.id } }"><h2 class="text-center">{{post.title}}</h2></router-link>
         </div>
 
         <div class="mb-3">
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       page: 1,
-      lastPage: null,
+      lastPage: 1,
       posts: null,
       error: "",
     };
