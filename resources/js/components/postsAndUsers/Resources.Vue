@@ -66,7 +66,7 @@ export default {
       this.page += value;
       this.posts = null;
       this.$axios
-        .get(`/api/posts?page=${this.page}`)
+        .get(`/api/user/${this.$route.params.id}/posts?page=${this.page}`)
         .then((response) => {
           this.posts = response.data.posts.data;
         })
@@ -77,7 +77,7 @@ export default {
   },
   created() {
     this.$axios
-      .get(`/api/posts?page=1`)
+      .get(`/api/user/${this.$route.params.id}/posts?page=1`)
       .then((response) => {
         this.posts = response.data.posts.data;
         this.lastPage = response.data.posts.last_page;

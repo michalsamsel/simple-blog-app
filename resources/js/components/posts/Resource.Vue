@@ -10,9 +10,11 @@
         </div>
         <h3 class="text-center">{{ post.title }}</h3>
         <h5 class="text-center text-break">{{ post.content }}</h5>
-        <small
-          >Written by:<b>{{ author.name }}</b
-          >, Last updated at:{{ post.updated_at }}</small
+        <small>
+          <router-link :to="{ name: 'userPosts', params: { id: author.id } }">
+            Written by:<b>{{ author.name }}</b>
+          </router-link>
+          , Last updated at:{{ post.updated_at }}</small
         >
 
         <br />
@@ -34,7 +36,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-secondary float-right"          
+          class="btn btn-secondary float-right"
           @click="$router.go(-1)"
         >
           Go back

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticateUserController;
+use App\Http\Controllers\PostAndUserController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,3 +30,6 @@ Route::group(['prefix' => 'post'], function () {
     Route::put('/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
     Route::delete('/{id}', [PostController::class, 'destroy'])->middleware('auth:sanctum');
 });
+
+//PostAndUserController routes
+Route::get('/user/{id}/posts', [PostAndUserController::class, 'index']);
