@@ -18,7 +18,7 @@
               class="form-control"
               id="email"
               name="email"
-              placeholder="name@example.com"
+              placeholder="example@email.com"
               required
               maxlength="255"
             />

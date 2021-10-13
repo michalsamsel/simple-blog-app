@@ -26,7 +26,9 @@ class UpdateNameColumnInUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique('name');
+            Schema::disableForeignKeyConstraints();
+            $table->dropUnique('users_name_unique');
+            Schema::enableForeignKeyConstraints();
         });
     }
 }
