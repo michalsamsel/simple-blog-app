@@ -14,6 +14,9 @@ import PostDelete from '../components/posts/Delete';
 
 import UserPosts from '../components/postsAndUsers/Resources'
 
+import CommentEdit from '../components/comments/Edit';
+import CommentDelete from '../components/comments/Delete';
+
 export const routes = [
     {
         name: 'home',
@@ -64,6 +67,16 @@ export const routes = [
         name: 'userPosts',
         path: '/user/:id/posts',
         component: UserPosts
+    },
+    {
+        name: 'commentEdit',
+        path: '/comment/:id/edit',
+        component: CommentEdit
+    },
+    {
+        name: 'commentDelete',
+        path: '/comment/:id/delete',
+        component: CommentDelete
     },
 ];
 

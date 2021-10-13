@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Comment extends Model
 {
     use HasFactory;
 
@@ -17,22 +16,12 @@ class Post extends Model
      */
     protected $fillable = [
         'user_id',
-        'title',
+        'post_id',
         'content',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
-        'updated_at' => 'datetime:Y-m-d',
-    ];
-
-    /**
-    * Relation: post belongs to user
+    * Relation: comment belongs to user
     */
     public function user()
     {

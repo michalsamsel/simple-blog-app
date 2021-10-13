@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticateUserController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostAndUserController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
@@ -33,3 +34,12 @@ Route::group(['prefix' => 'post'], function () {
 
 //PostAndUserController routes
 Route::get('/user/{id}/posts', [PostAndUserController::class, 'index']);
+
+//CommentController routes
+Route::get('/post/{id}/comments', [CommentController::class, 'index']);
+Route::group(['prefix' => 'comment'], function () {
+    Route::get('/{id}', [CommentController::class, 'show']);
+    Route::post('/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
+    Route::put('/{id}', [CommentController::class, 'update'])->middleware('auth:sanctum');
+    Route::delete('/{id}', [CommentController::class, 'destroy'])->middleware('auth:sanctum');
+});
