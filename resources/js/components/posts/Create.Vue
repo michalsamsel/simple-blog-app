@@ -2,12 +2,14 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-8 col-md-6">
+        <!--Information divs-->
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
         <div class="alert alert-success" role="alert" v-if="message">
           {{ message }}
         </div>
+        <!--Form for creating a post resource-->
         <form @submit.prevent="submit">
           <div class="form-group">
             <label for="name">Title:</label>
@@ -56,13 +58,16 @@ export default {
   name: "postCreate",
   data() {
     return {
+      //Information variable
       message: "",
       error: "",
+      //Data of resource
       title: "",
       content: "",
     };
   },
   methods: {
+    //Submiting form of a new post resource
     submit(event) {
       const { title, content } = Object.fromEntries(new FormData(event.target));
 
@@ -78,7 +83,7 @@ export default {
             this.$router.push({
               name: "post",
               params: { id: response.data.postId },
-            });
+            }); //Show newly created resource
           })
           .catch((error) => {
             this.message = "";

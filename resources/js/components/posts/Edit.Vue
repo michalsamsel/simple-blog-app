@@ -1,16 +1,20 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
+      <!--While processing request-->
       <div class="col-8 col-md-6" v-if="post === null">
         <h1 class="text-center">Loading article...</h1>
       </div>
+      <!--When request is loaded.-->
       <div class="col-8 col-md-6" v-else>
+        <!--Information divs-->
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
         <div class="alert alert-success" role="alert" v-if="message">
           {{ message }}
         </div>
+        <!--Form for updating a post resource-->
         <form @submit.prevent="submit">
           <div class="form-group">
             <label for="name">Title:</label>
@@ -47,9 +51,7 @@
               >{{ 500 - content.length }}/500</small
             >
           </div>
-          <button type="submit" class="btn btn-success mr-3">
-            Save Changes
-          </button>
+          <button type="submit" class="btn btn-success mr-3">Save Changes</button>
           <button type="button" class="btn btn-danger" @click="$router.go(-1)">
             Cancel
           </button>
@@ -63,13 +65,16 @@ export default {
   name: "postEdit",
   data() {
     return {
+      //Information variable
       message: "",
       error: "",
+      //Updated data of resource
       title: "",
       content: "",
     };
   },
   methods: {
+    //Submiting form of updating a post resource
     submit(event) {
       const { title, content } = Object.fromEntries(new FormData(event.target));
 
@@ -85,7 +90,7 @@ export default {
             this.$router.push({
               name: "post",
               params: { id: this.$route.params.id },
-            });
+            }); //Show updated resource
           })
           .catch((error) => {
             this.message = "";
@@ -95,11 +100,13 @@ export default {
     },
   },
   created() {
+    //Load post resource
     this.$axios
       .get(`/api/post/${this.$route.params.id}`)
       .then((response) => {
         this.error = "";
         const post = response.data.post;
+        //Split for form input fields
         this.title = post.title;
         this.content = post.content;
       })

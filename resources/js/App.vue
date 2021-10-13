@@ -17,7 +17,7 @@
       <ul class="navbar-nav mr-auto">
         <!--Options for everyone-->
         <li class="nav-item">
-          <router-link class="nav-link" to="/posts">Articles list</router-link>
+          <router-link class="nav-link" to="/posts">Post list</router-link>
         </li>
         <!--End options for everyone-->
         <!--Options for guests-->
@@ -30,14 +30,17 @@
         <!--End options for guests-->
         <!--Options for users-->
         <li class="nav-item" v-if="isAuthenticated">
-          <router-link class="nav-link" to="/post/create"
-            >Write article</router-link
+          <router-link
+            class="nav-link"
+            :to="{ name: 'userPosts', params: { id: user.id } }"
+            >My posts</router-link
           >
         </li>
         <li class="nav-item" v-if="isAuthenticated">
-          <router-link class="nav-link" to="/logout" @click="logout"
-            >Logout</router-link
-          >
+          <router-link class="nav-link" to="/post/create">Write post</router-link>
+        </li>
+        <li class="nav-item" v-if="isAuthenticated">
+          <router-link class="nav-link" to="/logout" @click="logout">Logout</router-link>
         </li>
         <!--End options for users-->
       </ul>
@@ -51,17 +54,20 @@ export default {
   name: "App",
   data() {
     return {
+      //Variables from app.blade
       isAuthenticated: false,
+      user: null,
     };
   },
   methods: {
+    //Method which destroy user session
     logout() {
       this.$axios.get("/sanctum/csrf-cookie").then((response) => {
         this.$axios
           .post("/api/logout")
           .then((response) => {
             this.isAuthenticated = false;
-            window.location.href = "/";
+            window.location.href = "/"; //For reloading page and updating navbar
           })
           .catch((error) => {
             console.error(error.response.data.message);
@@ -70,7 +76,9 @@ export default {
     },
   },
   created() {
+    //Getting var values from app.blade
     this.isAuthenticated = window.Laravel.isAuthenticated;
+    this.user = window.Laravel.isAuthenticated ? window.Laravel.user : null;
   },
 };
 </script>

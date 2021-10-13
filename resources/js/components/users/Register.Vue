@@ -2,12 +2,14 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-8 col-md-6">
+        <!--Information divs-->
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
         <div class="alert alert-success" role="alert" v-if="message">
           {{ message }}
         </div>
+        <!--Form for user register-->
         <form @submit.prevent="submit">
           <div class="form-group">
             <label for="name">Nickname</label>
@@ -47,9 +49,8 @@
               maxlength="16"
             />
             <small id="passwordHelp" class="form-text text-muted"
-              >Password should be 6 do 16 character long. Password requires at
-              least one uppercase character, lowercase character, digit, special
-              character.</small
+              >Password should be 6 do 16 character long. Password requires at least one
+              uppercase character, lowercase character, digit, special character.</small
             >
           </div>
           <div class="form-group">
@@ -79,14 +80,17 @@ export default {
   name: "register",
   data() {
     return {
+      //Information variables
       error: "",
       message: "",
     };
   },
   methods: {
+    //Sending login data to UserAuthenticationController
     submit(event) {
-      const { name, email, password, password_confirmation } =
-        Object.fromEntries(new FormData(event.target));
+      const { name, email, password, password_confirmation } = Object.fromEntries(
+        new FormData(event.target)
+      );
 
       this.$axios
         .post("/api/register", {
@@ -98,6 +102,7 @@ export default {
         .then((response) => {
           this.error = "";
           this.message = response.data.message;
+          //If account was created redirect to login view
           this.$router.push({
             name: "login",
           });

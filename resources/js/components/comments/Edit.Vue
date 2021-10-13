@@ -1,16 +1,20 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
+      <!--While processing request-->
       <div class="col-8 col-md-6" v-if="post === null">
         <h1 class="text-center">Loading comment...</h1>
       </div>
+      <!--When request is loaded.-->
       <div class="col-8 col-md-6" v-else>
+        <!--Information divs-->
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
         <div class="alert alert-success" role="alert" v-if="message">
           {{ message }}
         </div>
+        <!--Form for updating a comment resource-->
         <form @submit.prevent="submit">
           <div class="form-group mt-5">
             <label for="commentContent">Comment:</label>
@@ -43,13 +47,16 @@ export default {
   name: "commentEdit",
   data() {
     return {
+      //Information variable
       message: "",
       error: "",
+      //Updated data of resource
       comment: null,
       commentContent: "",
     };
   },
   methods: {
+    //Submiting form of updating a comment resource
     submit(event) {
       const { commentContent } = Object.fromEntries(new FormData(event.target));
 
@@ -64,8 +71,8 @@ export default {
             this.message = response.data.message;
             this.$router.push({
               name: "post",
-              params: {id: this.comment.post_id}
-            });
+              params: { id: this.comment.post_id },
+            }); //Show updated resource
           })
           .catch((error) => {
             this.message = "";
@@ -75,12 +82,13 @@ export default {
     },
   },
   created() {
+    //Load comment resource
     this.$axios
       .get(`/api/comment/${this.$route.params.id}`)
       .then((response) => {
         this.error = "";
-        this.comment = response.data.comment;        
-        this.commentContent = this.comment.content;
+        this.comment = response.data.comment;
+        this.commentContent = this.comment.content; //Get value for form input
       })
       .catch((error) => {
         this.error = error.response.data.message;

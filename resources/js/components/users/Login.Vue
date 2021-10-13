@@ -2,12 +2,14 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-8 col-md-6">
+        <!--Information divs-->
         <div class="alert alert-danger" role="alert" v-if="error">
           {{ error }}
         </div>
         <div class="alert alert-success" role="alert" v-if="message">
           {{ message }}
         </div>
+        <!--Form for user login-->
         <form @submit.prevent="submit">
           <div class="form-group">
             <label for="email">Email address</label>
@@ -44,15 +46,15 @@ export default {
   name: "login",
   data() {
     return {
+      //Information variables
       error: "",
       message: "",
     };
   },
   methods: {
+    //Sending login data to UserAuthenticationController
     submit(event) {
-      const { email, password } = Object.fromEntries(
-        new FormData(event.target)
-      );
+      const { email, password } = Object.fromEntries(new FormData(event.target));
 
       this.$axios
         .post("/api/login", {
@@ -62,7 +64,7 @@ export default {
         .then((response) => {
           this.error = "";
           this.message = response.data.message;
-          window.location.href = "/posts";
+          window.location.href = "/posts"; //Reloading page to update navbar
         })
         .catch((error) => {
           this.message = "";
