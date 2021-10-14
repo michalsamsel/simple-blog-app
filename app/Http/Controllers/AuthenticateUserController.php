@@ -27,8 +27,8 @@ class AuthenticateUserController extends Controller
     {
         //Validate data passed in form
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|alpha_num|min:3|max:32|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|min:3|max:32|unique:users',
+            'email' => 'required|email|max:255|unique:users',
             'password' => [
                 'required',
                 'confirmed',
@@ -60,7 +60,7 @@ class AuthenticateUserController extends Controller
             //Successfull response
             return response()->json([
                 'message' => 'New account created!',
-            ], 200);
+            ], 201);
         } catch (Throwable $throwable) {
             //Server side error
             return response()->json([
