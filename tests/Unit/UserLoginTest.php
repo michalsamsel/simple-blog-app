@@ -3,11 +3,8 @@
 namespace Tests\Unit;
 
 use Hash;
-use App\Models\Comment;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserLoginTest extends TestCase

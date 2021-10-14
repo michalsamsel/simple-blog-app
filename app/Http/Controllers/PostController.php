@@ -73,7 +73,7 @@ class PostController extends Controller
             return response()->json([
                 'message' => 'New post created!',
                 'postId' => $post->id
-            ], 200);
+            ], 201);
         } catch (Throwable $throwable) {
             //Server side error
             return response()->json([

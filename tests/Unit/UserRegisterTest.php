@@ -107,6 +107,16 @@ class UserRegisterTest extends TestCase
         $data['email'] = 'test2@email.com'; //Changed email to do not trigger email validation rules
         $response = $this->postJson('/api/register', $data);
         $response->assertStatus(400);
+
+        //Any rule shouldnt be triggered now
+        $data = [
+            'name' => 'Test User 2',
+            'email' => 'test2@email.com',
+            'password' => 'Password1!',
+            'password_confirmation' => 'Password1!'
+        ];
+        $response = $this->postJson('/api/register', $data);
+        $response->assertStatus(201);
     }
 
     /**
@@ -148,7 +158,7 @@ class UserRegisterTest extends TestCase
         $response->assertStatus(400);
 
         //Test max rule
-        $data['name'] = str_repeat('a', 255) . '@email.com';
+        $data['email'] = str_repeat('a', 255) . '@email.com';
         $response = $this->postJson('/api/register', $data);
         $response->assertStatus(400);
 
@@ -159,6 +169,16 @@ class UserRegisterTest extends TestCase
         $data['email'] = 'Test User 2'; //Changed name to do not trigger name validation rules
         $response = $this->postJson('/api/register', $data);
         $response->assertStatus(400);
+
+        //Any rule shouldnt be triggered now
+        $data = [
+            'name' => 'Test User 2',
+            'email' => 'test2@email.com',
+            'password' => 'Password1!',
+            'password_confirmation' => 'Password1!'
+        ];
+        $response = $this->postJson('/api/register', $data);
+        $response->assertStatus(201);
     }
 
     /**
@@ -228,5 +248,11 @@ class UserRegisterTest extends TestCase
         $data['password_confirmation'] = $data['password'];
         $response = $this->postJson('/api/register', $data);
         $response->assertStatus(400);
+
+        //Any rule shouldnt be triggered now
+        $data['password'] = 'Password1!';
+        $data['password_confirmation'] = $data['password'];
+        $response = $this->postJson('/api/register', $data);
+        $response->assertStatus(201);
     }
 }
