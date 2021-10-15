@@ -20,7 +20,7 @@ class PostStoreTest extends TestCase
     {
         //Create a user
         Sanctum::actingAs(User::factory()->create(), ['*']);
-        $data = [            
+        $data = [
             'title' => 'Test title',
             'content' => 'Test content'
         ];
@@ -37,8 +37,10 @@ class PostStoreTest extends TestCase
      */
     public function testCreatePostWithoutAuthentication()
     {
+        $user = User::factory()->create();
+
         $data = [
-            'user_id' => 1,
+            'user_id' => $user->id,
             'title' => 'Test title',
             'content' => 'Test content'
         ];
@@ -47,7 +49,6 @@ class PostStoreTest extends TestCase
         $response = $this->postJson('/api/post/create', $data);
         $response->assertStatus(401);
     }
-
 
     /**
      * Test validation rules of 'title'     
@@ -60,7 +61,7 @@ class PostStoreTest extends TestCase
         //User should be authenticated to store a new resource
         Sanctum::actingAs(User::factory()->create(), ['*']);
 
-        $data = [            
+        $data = [
             'title' => 'Test title',
             'content' => 'Test content'
         ];
@@ -90,7 +91,7 @@ class PostStoreTest extends TestCase
         $response->assertStatus(400);
 
         //All rules should pass
-        $data = [            
+        $data = [
             'title' => 'Test title',
             'content' => 'Test content'
         ];
@@ -108,7 +109,7 @@ class PostStoreTest extends TestCase
     {
         //User should be authenticated to store a new resource
         Sanctum::actingAs(User::factory()->create(), ['*']);
-        $data = [            
+        $data = [
             'title' => 'Test title',
             'content' => 'Test content'
         ];
@@ -138,7 +139,7 @@ class PostStoreTest extends TestCase
         $response->assertStatus(400);
 
         //All rules should pass
-        $data = [            
+        $data = [
             'title' => 'Test title',
             'content' => 'Test content'
         ];
