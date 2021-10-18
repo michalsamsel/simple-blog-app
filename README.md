@@ -9,8 +9,8 @@ Each endpoint was tested with PHPUnit.
 
 1. [Technologies](#Requirements)
 2. [Setup](#Setup)
-3. [Manual Testing]()
-4. [Unit Tests]()
+3. [Manual Testing](#Manual-Testing)
+4. [Unit Tests](#Unit-Tests)
 5. [Licence](#Licence)
 
 ## Technologies
